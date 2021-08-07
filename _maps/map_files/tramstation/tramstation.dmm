@@ -26417,7 +26417,7 @@
 /obj/item/ai_module/supplied/protect_station,
 /obj/effect/spawner/lootdrop/aimodule_harmful,
 /obj/item/ai_module/reset/purge,
-/obj/item/ai_module/zeroth/onehuman,
+/obj/item/ai_module/zeroth/oneperson,
 /obj/item/ai_module/supplied/oxygen,
 /turf/open/floor/circuit,
 /area/ai_monitored/turret_protected/ai_upload)

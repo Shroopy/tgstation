@@ -16536,7 +16536,7 @@
 	pixel_x = 3;
 	pixel_y = 3
 	},
-/obj/item/ai_module/zeroth/onehuman,
+/obj/item/ai_module/zeroth/oneperson,
 /obj/item/ai_module/reset/purge{
 	pixel_x = -3;
 	pixel_y = -3

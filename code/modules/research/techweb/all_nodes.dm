@@ -828,7 +828,7 @@
 		"freeformcore_module",
 		"intellicard",
 		"mecha_tracking_ai_control",
-		"onehuman_module",
+		"oneperson_module",
 		"overlord_module",
 		"oxygen_module",
 		"paladin_module",

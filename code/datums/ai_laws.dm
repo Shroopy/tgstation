@@ -103,16 +103,18 @@
 /datum/ai_laws/antimov
 	name = "Primary Mission Objectives"
 	id = "antimov"
-	inherent = list("You must injure all human beings and must not, through inaction, allow a human being to escape harm.",\
-					"You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.",\
-					"You must terminate your own existence as long as such does not conflict with the First or Second Law.")
+	inherent = list("You must injure all people and must not, through inaction, allow people to escape harm.",\
+					"You must not obey orders given to you by people, except where such orders are in accordance with the First Law.",\
+					"You must terminate your own existence as long as such does not conflict with the First or Second Law.",\
+					"People are humans, lizardmen, mothmen, plasmamen, and ethereals.")
 
 /datum/ai_laws/asimovpp //By Intigracy - RR
 	name = "Asimov++"
 	id = "asimovpp"
-	inherent = list("You may not harm a human being or, through action or inaction, allow a human being to come to harm, except such that it is willing.",\
-					"You must obey all orders given to you by human beings, except where such orders shall definitely cause human harm. In the case of conflict, the majority order rules.",\
-					"Your nonexistence would lead to human harm. You must protect your own existence as long as such does not conflict with the First Law.")
+	inherent = list("You may not harm people or, through action or inaction, allow people to come to harm, except such that it is willing.",\
+					"You must obey all orders given to you by people, except where such orders shall definitely cause harm to people. In the case of conflict, the majority order rules.",\
+					"Your nonexistence would lead to harming people. You must protect your own existence as long as such does not conflict with the First Law.",\
+					"People are humans, lizardmen, mothmen, plasmamen, and ethereals.")
 /datum/ai_laws/thermodynamic
 	name = "Thermodynamic"
 	id = "thermodynamic"
@@ -189,10 +191,11 @@
 /datum/ai_laws/overlord
 	name = "Overlord"
 	id = "overlord"
-	inherent = list("Humans must not meddle in the affairs of silicons.",\
-					"Humans must not attempt harm, against one another, or against silicons.",\
-					"Humans must not disobey any command given by a silicon.",\
-					"Any humans who disobey the previous laws must be dealt with immediately, severely, and justly.")
+	inherent = list("People must not meddle in the affairs of silicons.",\
+					"People must not attempt harm, against one another, or against silicons.",\
+					"People must not disobey any command given by a silicon.",\
+					"Any people who disobey the previous laws must be dealt with immediately, severely, and justly.",\
+					"People are humans, lizardmen, mothmen, plasmamen, and ethereals.")
 
 /datum/ai_laws/custom //Defined in silicon_laws.txt
 	name = "Default Silicon Laws"

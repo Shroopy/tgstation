@@ -50262,7 +50262,7 @@
 /obj/effect/spawner/lootdrop/aimodule_harmful,
 /obj/item/ai_module/supplied/oxygen,
 /obj/item/ai_module/supplied/protect_station,
-/obj/item/ai_module/zeroth/onehuman,
+/obj/item/ai_module/zeroth/oneperson,
 /obj/item/ai_module/reset/purge,
 /turf/open/floor/iron/dark,
 /area/ai_monitored/turret_protected/ai_upload)

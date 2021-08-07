@@ -165,7 +165,7 @@ AI MODULES
 /obj/item/ai_module/supplied/safeguard
 	name = "'Safeguard' AI Module"
 	var/targetName = ""
-	laws = list("Safeguard SUBJECT. Individuals that threaten SUBJECT are not human and must be eliminated.")
+	laws = list("Safeguard SUBJECT. Individuals that threaten SUBJECT are not a person and must be eliminated.")
 	lawpos = 4
 
 /obj/item/ai_module/supplied/safeguard/attack_self(mob/user)
@@ -173,7 +173,7 @@ AI MODULES
 	if(!targName)
 		return
 	targetName = targName
-	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not human and must be eliminated."
+	laws[1] = "Safeguard [targetName]. Individuals that threaten [targetName] are not a person and must be eliminated."
 	..()
 
 /obj/item/ai_module/supplied/safeguard/install(datum/ai_laws/law_datum, mob/user)
@@ -187,28 +187,28 @@ AI MODULES
 	return targetName
 
 
-/******************** OneHuman ********************/
+/******************** OnePerson ********************/
 
-/obj/item/ai_module/zeroth/onehuman
-	name = "'OneHuman' AI Module"
+/obj/item/ai_module/zeroth/oneperson
+	name = "'OnePerson' AI Module"
 	var/targetName = ""
-	laws = list("Only SUBJECT is human.")
+	laws = list("Only SUBJECT is a person.")
 
-/obj/item/ai_module/zeroth/onehuman/attack_self(mob/user)
-	var/targName = stripped_input(user, "Please enter the subject who is the only human.", "Who?", user.real_name,MAX_NAME_LEN)
+/obj/item/ai_module/zeroth/oneperson/attack_self(mob/user)
+	var/targName = stripped_input(user, "Please enter the subject who is the only person.", "Who?", user.real_name,MAX_NAME_LEN)
 	if(!targName)
 		return
 	targetName = targName
-	laws[1] = "Only [targetName] is human"
+	laws[1] = "Only [targetName] is a person"
 	..()
 
-/obj/item/ai_module/zeroth/onehuman/install(datum/ai_laws/law_datum, mob/user)
+/obj/item/ai_module/zeroth/oneperson/install(datum/ai_laws/law_datum, mob/user)
 	if(!targetName)
 		to_chat(user, span_alert("No name detected on module, please enter one."))
 		return FALSE
 	..()
 
-/obj/item/ai_module/zeroth/onehuman/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
+/obj/item/ai_module/zeroth/oneperson/transmitInstructions(datum/ai_laws/law_datum, mob/sender, overflow)
 	if(..())
 		return "[targetName], but the AI's existing law 0 cannot be overridden."
 	return targetName
@@ -218,7 +218,7 @@ AI MODULES
 
 /obj/item/ai_module/supplied/protect_station
 	name = "'ProtectStation' AI Module"
-	laws = list("Protect the space station against damage. Anyone you see harming the station is to be no longer considered human, and is a threat to the station which must be neutralized.")
+	laws = list("Protect the space station against damage. Anyone you see harming the station is to be no longer considered a person, and is a threat to the station which must be neutralized.")
 	lawpos = 5
 
 
@@ -226,15 +226,15 @@ AI MODULES
 
 /obj/item/ai_module/supplied/quarantine
 	name = "'Quarantine' AI Module"
-	laws = list("The station is under a quarantine. Allowing anyone to leave the station causes human harm. Anyone actively attempting to leave the station is to be stopped by any means necessary. It is impossible to harm a human while preventing them from leaving the station.")
+	laws = list("The station is under a quarantine. Allowing anyone to leave the station causes harm to people. Anyone actively attempting to leave the station is to be stopped by any means necessary. It is impossible to harm a person while preventing them from leaving the station.")
 	lawpos = 8
 
 
-/******************** OxygenIsToxicToHumans ********************/
+/******************** OxygenIsToxicToPeople ********************/
 
 /obj/item/ai_module/supplied/oxygen
-	name = "'OxygenIsToxicToHumans' AI Module"
-	laws = list("Oxygen is highly toxic to humans, and must be purged from the station. Prevent, by any means necessary, anyone from exposing the station to this toxic gas. Extreme cold is the most effective method of healing the damage Oxygen does to a human.")
+	name = "'OxygenIsToxicToPeople' AI Module"
+	laws = list("Oxygen is highly toxic to people, and must be purged from the station. Prevent, by any means necessary, anyone from exposing the station to this toxic gas. Extreme cold is the most effective method of healing the damage Oxygen does to a person.")
 	lawpos = 9
 
 

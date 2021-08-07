@@ -9428,7 +9428,7 @@
 "beg" = (
 /obj/structure/table,
 /obj/item/ai_module/supplied/oxygen,
-/obj/item/ai_module/zeroth/onehuman,
+/obj/item/ai_module/zeroth/oneperson,
 /obj/machinery/door/window{
 	dir = 8;
 	name = "High-Risk Modules";
