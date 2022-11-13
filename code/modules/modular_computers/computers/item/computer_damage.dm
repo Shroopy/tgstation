@@ -1,6 +1,6 @@
 /obj/item/modular_computer/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1)
 	. = ..()
-	var/component_probability = min(50, max(damage_amount*0.1, 1 - obj_integrity/max_integrity))
+	var/component_probability = min(50, max(damage_amount*0.1, 1 - atom_integrity/max_integrity))
 	switch(damage_flag)
 		if(BULLET)
 			component_probability = damage_amount * 0.5
@@ -12,9 +12,9 @@
 			if(prob(component_probability))
 				H.take_damage(round(damage_amount*0.5), damage_type, damage_flag, 0)
 
-
 /obj/item/modular_computer/deconstruct(disassembled = TRUE)
 	break_apart()
+	return ..()
 
 /obj/item/modular_computer/proc/break_apart()
 	if(!(flags_1 & NODECONSTRUCT_1))
@@ -30,4 +30,3 @@
 			if(prob(25))
 				H.take_damage(rand(10,30), BRUTE, 0, 0)
 	relay_qdel()
-	qdel(src)

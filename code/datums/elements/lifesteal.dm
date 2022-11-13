@@ -3,7 +3,7 @@
  * by a flat amount whenever a successful attack is performed against another living mob.
  */
 /datum/element/lifesteal
-	element_flags = ELEMENT_DETACH|ELEMENT_BESPOKE
+	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY|ELEMENT_BESPOKE
 	id_arg_index = 2
 	/// heals a constant amount every time a hit occurs
 	var/flat_heal
@@ -11,7 +11,7 @@
 
 /datum/element/lifesteal/Attach(datum/target, flat_heal)
 	. = ..()
-	if(isgun(target))
+	if(ismachinery(target) || isstructure(target) || isgun(target) || isprojectilespell(target))
 		RegisterSignal(target, COMSIG_PROJECTILE_ON_HIT, .proc/projectile_hit)
 	else if(isitem(target))
 		RegisterSignal(target, COMSIG_ITEM_AFTERATTACK, .proc/item_afterattack)
@@ -40,7 +40,7 @@
 		return
 	do_lifesteal(attacker, target)
 
-/datum/element/lifesteal/proc/projectile_hit(atom/fired_from, atom/movable/firer, atom/target, Angle)
+/datum/element/lifesteal/proc/projectile_hit(datum/fired_from, atom/movable/firer, atom/target, Angle)
 	SIGNAL_HANDLER
 
 	do_lifesteal(firer, target)

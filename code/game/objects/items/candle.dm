@@ -5,7 +5,7 @@
 		humankind. The jewelry he kept for himself."
 	icon = 'icons/obj/candle.dmi'
 	icon_state = "candle1"
-	inhand_icon_state = "candle1"
+	inhand_icon_state = null
 	w_class = WEIGHT_CLASS_TINY
 	light_color = LIGHT_COLOR_FIRE
 	heat = 1000
@@ -15,7 +15,7 @@
 	var/infinite = FALSE
 	var/start_lit = FALSE
 
-/obj/item/candle/Initialize()
+/obj/item/candle/Initialize(mapload)
 	. = ..()
 	if(start_lit)
 		light()

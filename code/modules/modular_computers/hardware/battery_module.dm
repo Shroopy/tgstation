@@ -4,8 +4,8 @@
 	icon_state = "cell_con"
 	critical = 1
 	malfunction_probability = 1
-	var/obj/item/stock_parts/cell/battery
 	device_type = MC_CELL
+	var/obj/item/stock_parts/cell/battery
 
 /obj/item/computer_hardware/battery/get_cell()
 	return battery
@@ -16,7 +16,8 @@
 		battery = new battery_type(src)
 
 /obj/item/computer_hardware/battery/Destroy()
-	battery = null
+	if(battery)
+		QDEL_NULL(battery)
 	return ..()
 
 ///What happens when the battery is removed (or deleted) from the module, through try_eject() or not.

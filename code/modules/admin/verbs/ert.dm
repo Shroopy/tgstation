@@ -1,6 +1,9 @@
 /// If we spawn an ERT with the "choose experienced leader" option, select the leader from the top X playtimes
 #define ERT_EXPERIENCED_LEADER_CHOOSE_TOP 3
 
+///Dummy mob reserve slot for admin use
+#define DUMMY_HUMAN_SLOT_ADMIN "admintools"
+
 // CENTCOM RESPONSE TEAM
 
 /datum/admins/proc/makeERTTemplateModified(list/settings)
@@ -43,7 +46,6 @@
 
 	equipAntagOnDummy(mannequin, ert)
 
-	COMPILE_OVERLAYS(mannequin)
 	CHECK_TICK
 	var/icon/preview_icon = icon('icons/effects/effects.dmi', "nothing")
 	preview_icon.Scale(48+32, 16+32)
@@ -119,14 +121,14 @@
 		if(ertemplate.spawn_admin)
 			if(isobserver(usr))
 				var/mob/living/carbon/human/admin_officer = new (spawnpoints[1])
-				var/chosen_outfit = usr.client?.prefs?.brief_outfit
+				var/chosen_outfit = usr.client?.prefs?.read_preference(/datum/preference/choiced/brief_outfit)
 				usr.client.prefs.safe_transfer_prefs_to(admin_officer, is_antag = TRUE)
 				admin_officer.equipOutfit(chosen_outfit)
 				admin_officer.key = usr.key
 			else
-				to_chat(usr, "<span class='warning'>Could not spawn you in as briefing officer as you are not a ghost!</spawn>")
+				to_chat(usr, span_warning("Could not spawn you in as briefing officer as you are not a ghost!"))
 
-		var/list/mob/dead/observer/candidates = pollGhostCandidates("Do you wish to be considered for [ertemplate.polldesc]?", "deathsquad")
+		var/list/mob/dead/observer/candidates = poll_ghost_candidates("Do you wish to be considered for [ertemplate.polldesc]?", "deathsquad")
 		var/teamSpawned = FALSE
 
 		if(candidates.len == 0)
@@ -157,7 +159,7 @@
 				var/mob/dead/observer/potential_leader = i
 				candidate_living_exps[potential_leader] = potential_leader.client?.get_exp_living(TRUE)
 
-			candidate_living_exps = sortList(candidate_living_exps, cmp=/proc/cmp_numeric_dsc)
+			candidate_living_exps = sort_list(candidate_living_exps, cmp=/proc/cmp_numeric_dsc)
 			if(candidate_living_exps.len > ERT_EXPERIENCED_LEADER_CHOOSE_TOP)
 				candidate_living_exps = candidate_living_exps.Cut(ERT_EXPERIENCED_LEADER_CHOOSE_TOP+1) // pick from the top ERT_EXPERIENCED_LEADER_CHOOSE_TOP contenders in playtime
 			earmarked_leader = pick(candidate_living_exps)
@@ -197,7 +199,7 @@
 			ert_operative.mind.set_assigned_role(SSjob.GetJobType(ert_antag.ert_job_path))
 
 			//Logging and cleanup
-			log_game("[key_name(ert_operative)] has been selected as an [ert_antag.name]")
+			ert_operative.log_message("has been selected as \a [ert_antag.name].", LOG_GAME)
 			numagents--
 			teamSpawned++
 
@@ -227,3 +229,4 @@
 		log_admin("[key_name(usr)] failed to create a CentCom response team.")
 
 #undef ERT_EXPERIENCED_LEADER_CHOOSE_TOP
+#undef DUMMY_HUMAN_SLOT_ADMIN

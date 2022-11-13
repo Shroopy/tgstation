@@ -2,7 +2,9 @@
 	name = "pressure plate"
 	desc = "An electronic device that triggers when stepped on. Ctrl-Click to toggle the pressure plate off and on."
 	icon = 'icons/obj/puzzle_small.dmi'
-	inhand_icon_state = "flash"
+	inhand_icon_state = "flashtool"
+	lefthand_file = 'icons/mob/inhands/equipment/security_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/equipment/security_righthand.dmi'
 	icon_state = "pressureplate"
 	layer = LOW_OBJ_LAYER
 	var/trigger_mob = TRUE
@@ -23,13 +25,13 @@
 	var/protected = FALSE
 	var/undertile_pressureplate = TRUE
 
-/obj/item/pressure_plate/Initialize()
+/obj/item/pressure_plate/Initialize(mapload)
 	. = ..()
 	tile_overlay = image(icon = 'icons/turf/floors.dmi', icon_state = "pp_overlay")
 	if(roundstart_signaller)
 		sigdev = new
 		sigdev.code = roundstart_signaller_code
-		sigdev.frequency = roundstart_signaller_freq
+		sigdev.set_frequency(roundstart_signaller_freq)
 
 	if(undertile_pressureplate)
 		AddElement(/datum/element/undertile, tile_overlay = tile_overlay, use_anchor = TRUE)
@@ -59,7 +61,7 @@
 		sigdev.signal()
 
 /obj/item/pressure_plate/attackby(obj/item/I, mob/living/L)
-	if(istype(I, /obj/item/assembly/signaler) && !istype(sigdev) && removable_signaller && L.transferItemToLoc(I, src))
+	if(issignaler(I) && !istype(sigdev) && removable_signaller && L.transferItemToLoc(I, src))
 		sigdev = I
 		to_chat(L, span_notice("You attach [I] to [src]!"))
 	return ..()

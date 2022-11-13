@@ -33,13 +33,15 @@
 			/datum/surgery_step/close)
 
 /datum/surgery_step/heal
-	name = "repair body"
+	name = "repair body (hemostat)"
 	implements = list(
 		TOOL_HEMOSTAT = 100,
 		TOOL_SCREWDRIVER = 65,
 		/obj/item/pen = 55)
 	repeatable = TRUE
 	time = 25
+	success_sound = 'sound/surgery/retractor2.ogg'
+	failure_sound = 'sound/surgery/organ2.ogg'
 	var/brutehealing = 0
 	var/burnhealing = 0
 	var/brute_multiplier = 0 //multiplies the damage that the patient has. if 0 the patient wont get any additional healing from the damage he has.
@@ -63,6 +65,7 @@
 			display_results(user, target, span_notice("You attempt to patch some of [target]'s [woundtype]."),
 		span_notice("[user] attempts to patch some of [target]'s [woundtype]."),
 		span_notice("[user] attempts to patch some of [target]'s [woundtype]."))
+		display_pain(target, "Your [woundtype] sting like hell!")
 
 /datum/surgery_step/heal/initiate(mob/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, try_to_fail = FALSE)
 	if(!..())
@@ -164,7 +167,7 @@
 	return progress_text
 
 /datum/surgery_step/heal/brute/basic
-	name = "tend bruises"
+	name = "tend bruises (hemostat)"
 	brutehealing = 5
 	brute_multiplier = 0.07
 
@@ -229,7 +232,7 @@
 	return progress_text
 
 /datum/surgery_step/heal/burn/basic
-	name = "tend burn wounds"
+	name = "tend burn wounds (hemostat)"
 	burnhealing = 5
 	burn_multiplier = 0.07
 
@@ -300,7 +303,7 @@
 	return progress_text
 
 /datum/surgery_step/heal/combo
-	name = "tend physical wounds"
+	name = "tend physical wounds (hemostat)"
 	brutehealing = 3
 	burnhealing = 3
 	brute_multiplier = 0.07

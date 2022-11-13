@@ -17,6 +17,13 @@
 	var/processing_quirk = FALSE
 	/// When making an abstract quirk (in OOP terms), don't forget to set this var to the type path for that abstract quirk.
 	var/abstract_parent_type = /datum/quirk
+	/// The icon to show in the preferences menu.
+	/// This references a tgui icon, so it can be FontAwesome or a tgfont (with a tg- prefix).
+	var/icon
+	/// A list of items people can receive from mail who have this quirk enabled
+	/// The base weight for the each quirk's mail goodies list to be selected is 5
+	/// then the item selected is determined by pick(selected_quirk.mail_goodies)
+	var/mail_goodies = list()
 
 /datum/quirk/Destroy()
 	if(quirk_holder)
@@ -89,7 +96,7 @@
 		to_chat(quirk_holder, lose_text)
 
 	if(mob_trait)
-		REMOVE_TRAIT(quirk_holder, mob_trait, ROUNDSTART_TRAIT)
+		REMOVE_TRAIT(quirk_holder, mob_trait, QUIRK_TRAIT)
 
 	if(processing_quirk)
 		STOP_PROCESSING(SSquirks, src)
@@ -158,7 +165,7 @@
 		var/mob/living/carbon/human/human_holder = quirk_holder
 		// post_add() can be called via delayed callback. Check they still have a backpack equipped before trying to open it.
 		if(human_holder.back)
-			SEND_SIGNAL(human_holder.back, COMSIG_TRY_STORAGE_SHOW, human_holder)
+			human_holder.back.atom_storage.show_contents(human_holder)
 
 	for(var/chat_string in where_items_spawned)
 		to_chat(quirk_holder, chat_string)

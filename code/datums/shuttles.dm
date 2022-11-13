@@ -1,8 +1,16 @@
+#define EMAG_LOCKED_SHUTTLE_COST (CARGO_CRATE_VALUE * 50)
+
 /datum/map_template/shuttle
 	name = "Base Shuttle Template"
 	var/prefix = "_maps/shuttles/"
 	var/suffix
+	/**
+	 * Port ID is the place this template should be docking at, set on '/obj/docking_port/stationary'
+	 * Because getShuttle() compares port_id to shuttle_id to find an already existing shuttle,
+	 * you should set shuttle_id to be the same as port_id if you want them to be replacable.
+	 */
 	var/port_id
+	///ID of the shuttle, make sure it matches port_id if necessary.
 	var/shuttle_id
 
 	var/description
@@ -12,6 +20,8 @@
 	var/credit_cost = INFINITY
 	/// What job accesses can buy this shuttle? If null, this shuttle cannot be bought.
 	var/list/who_can_purchase = list(ACCESS_CAPTAIN)
+	/// Whether or not this shuttle is locked to emags only.
+	var/emag_only = FALSE
 	/// If set, overrides default movement_force on shuttle
 	var/list/movement_force
 
@@ -32,30 +42,13 @@
 	if(!cached_map)
 		return
 
-	discover_port_offset()
+	var/offset = discover_offset(/obj/docking_port/mobile)
+
+	port_x_offset = offset[1]
+	port_y_offset = offset[2]
 
 	if(!cache)
 		cached_map = null
-
-/datum/map_template/shuttle/proc/discover_port_offset()
-	var/key
-	var/list/models = cached_map.grid_models
-	for(key in models)
-		if(findtext(models[key], "[/obj/docking_port/mobile]")) // Yay compile time checks
-			break // This works by assuming there will ever only be one mobile dock in a template at most
-
-	for(var/i in cached_map.gridSets)
-		var/datum/grid_set/gset = i
-		var/ycrd = gset.ycrd
-		for(var/line in gset.gridLines)
-			var/xcrd = gset.xcrd
-			for(var/j in 1 to length(line) step cached_map.key_len)
-				if(key == copytext(line, j, j + cached_map.key_len))
-					port_x_offset = xcrd
-					port_y_offset = ycrd
-					return
-				++xcrd
-			--ycrd
 
 /datum/map_template/shuttle/load(turf/T, centered, register=TRUE)
 	. = ..()
@@ -65,7 +58,7 @@
 							locate(.[MAP_MAXX], .[MAP_MAXY], .[MAP_MAXZ]))
 	for(var/i in 1 to turfs.len)
 		var/turf/place = turfs[i]
-		if(istype(place, /turf/open/space)) // This assumes all shuttles are loaded in a single spot then moved to their real destination.
+		if(isspaceturf(place)) // This assumes all shuttles are loaded in a single spot then moved to their real destination.
 			continue
 		if(length(place.baseturfs) < 2) // Some snowflake shuttle shit
 			continue
@@ -180,12 +173,12 @@
 /datum/map_template/shuttle/emergency/construction
 	suffix = "construction"
 	name = "Build your own shuttle kit"
-	description = "For the enterprising shuttle engineer! The chassis will dock upon purchase, but launch will have to be authorized as usual via shuttle call. Comes stocked with construction materials. Unlocks the ability to buy shuttle engine crates from cargo."
-	admin_notes = "No brig, no medical facilities, no shuttle console."
+	description = "For the enterprising shuttle engineer! The chassis will dock upon purchase, but launch will have to be authorized as usual via shuttle call. Comes stocked with construction materials. Unlocks the ability to buy shuttle engine crates from cargo, which allow you to speed up shuttle transit time."
+	admin_notes = "No brig, no medical facilities."
 	credit_cost = CARGO_CRATE_VALUE * 5
 	who_can_purchase = list(ACCESS_CAPTAIN, ACCESS_CE)
 
-/datum/map_template/shuttle/emergency/airless/post_load()
+/datum/map_template/shuttle/emergency/construction/post_load()
 	. = ..()
 	//enable buying engines from cargo
 	var/datum/supply_pack/P = SSshuttle.supply_packs[/datum/supply_pack/engineering/shuttle_engine]
@@ -233,7 +226,8 @@
 	name = "Grand Corporate Monastery"
 	description = "Originally built for a public station, this grand edifice to religion, due to budget cuts, is now available as an escape shuttle for the right... donation. Due to its large size and callous owners, this shuttle may cause collateral damage."
 	admin_notes = "WARNING: This shuttle WILL destroy a fourth of the station, likely picking up a lot of objects with it."
-	credit_cost = CARGO_CRATE_VALUE * 250
+	emag_only = TRUE
+	credit_cost = EMAG_LOCKED_SHUTTLE_COST * 1.8
 	movement_force = list("KNOCKDOWN" = 3, "THROW" = 5)
 
 /datum/map_template/shuttle/emergency/luxury
@@ -259,8 +253,8 @@
 	name = "Disco Inferno"
 	description = "The glorious results of centuries of plasma research done by Nanotrasen employees. This is the reason why you are here. Get on and dance like you're on fire, burn baby burn!"
 	admin_notes = "Flaming hot. The main area has a dance machine as well as plasma floor tiles that will be ignited by players every single time."
-	credit_cost = CARGO_CRATE_VALUE * 20
-	who_can_purchase = null
+	emag_only = TRUE
+	credit_cost = EMAG_LOCKED_SHUTTLE_COST
 
 /datum/map_template/shuttle/emergency/arena
 	suffix = "arena"
@@ -393,7 +387,8 @@
 	Outside of admin intervention, it cannot explode. \
 	It does, however, still dust anything on contact, emits high levels of radiation, and induce hallucinations in anyone looking at it without protective goggles. \
 	Emitters spawn powered on, expect admin notices, they are harmless."
-	credit_cost = CARGO_CRATE_VALUE * 200
+	emag_only = TRUE
+	credit_cost = EMAG_LOCKED_SHUTTLE_COST
 	movement_force = list("KNOCKDOWN" = 3, "THROW" = 2)
 
 /datum/map_template/shuttle/emergency/imfedupwiththisworld
@@ -402,7 +397,8 @@
 	description = "How was space work today? Oh, pretty good. We got a new space station and the company will make a lot of money. What space station? I cannot tell you; it's space confidential. \
 	Aw, come space on. Why not? No, I can't. Anyway, how is your space roleplay life?"
 	admin_notes = "Tiny, with a single airlock and wooden walls. What could go wrong?"
-	who_can_purchase = null
+	emag_only = TRUE
+	credit_cost = EMAG_LOCKED_SHUTTLE_COST
 	movement_force = list("KNOCKDOWN" = 3, "THROW" = 2)
 
 /datum/map_template/shuttle/emergency/goon
@@ -418,6 +414,15 @@
 	He says this shuttle is based off an old entertainment complex from the 1990s, though our database has no records on anything pertaining to that decade."
 	admin_notes = "ONLY NINETIES KIDS REMEMBER. Uses the fun balloon and drone from the Emergency Bar."
 	credit_cost = CARGO_CRATE_VALUE * 5
+
+/datum/map_template/shuttle/emergency/basketball
+	suffix = "bballhooper"
+	name = "Basketballer's Stadium"
+	description = "Hoop, man, hoop! Get your shooting game on with this sleek new basketball stadium! Do keep in mind that several other features \
+	that you may expect to find common-place on other shuttles aren't present to give you this sleek stadium at an affordable cost. \
+	It also wasn't manufactured to deal with the form-factor of some of your stations... good luck with that."
+	admin_notes = "A larger shuttle built around a basketball stadium: entirely impractical but just a complete blast!"
+	credit_cost = CARGO_CRATE_VALUE * 10
 
 /datum/map_template/shuttle/emergency/wabbajack
 	suffix = "wabbajack"
@@ -447,13 +452,19 @@
 	description = "A large shuttle with a center biodome that is flourishing with life. Frolick with the monkeys! (Extra monkeys are stored on the bridge.)"
 	admin_notes = "Pretty freakin' large, almost as big as Raven or Cere. Excercise caution with it."
 	credit_cost = CARGO_CRATE_VALUE * 16
-	
+
 /datum/map_template/shuttle/emergency/casino
 	suffix = "casino"
 	name = "Lucky Jackpot Casino Shuttle"
 	description = "A luxurious casino packed to the brim with everything you need to start new gambling addicitions!"
 	admin_notes = "The ship is a bit chunky, so watch where you park it."
 	credit_cost = 7777
+	
+/datum/map_template/shuttle/emergency/shadow
+	suffix = "shadow"
+	name = "The NTSS Shadow"
+	description = "Guaranteed to get you somewhere FAST. With a custom-built plasma engine, this bad boy will put more distance between you and certain danger than any other!"
+	credit_cost = CARGO_CRATE_VALUE * 50
 
 /datum/map_template/shuttle/ferry/base
 	suffix = "base"
@@ -582,6 +593,10 @@
 	suffix = "box"
 	name = "labour shuttle (Box)"
 
+/datum/map_template/shuttle/labour/generic
+	suffix = "generic"
+	name = "labour shuttle (Generic)"
+
 /datum/map_template/shuttle/arrival/donut
 	suffix = "donut"
 	name = "arrival shuttle (Donut)"
@@ -686,6 +701,26 @@
 	suffix = "bounty"
 	name = "Bounty Hunter Ship"
 
+/datum/map_template/shuttle/starfury
+	port_id = "starfury"
+	who_can_purchase = null
+
+/datum/map_template/shuttle/starfury/fighter_one
+	suffix = "fighter1"
+	name = "SBC Starfury Fighter (1)"
+
+/datum/map_template/shuttle/starfury/fighter_two
+	suffix = "fighter2"
+	name = "SBC Starfury Fighter (2)"
+
+/datum/map_template/shuttle/starfury/fighter_three
+	suffix = "fighter3"
+	name = "SBC Starfury Fighter (3)"
+
+/datum/map_template/shuttle/starfury/corvette
+	suffix = "corvette"
+	name = "SBC Starfury Corvette"
+
 /datum/map_template/shuttle/ruin/caravan_victim
 	suffix = "caravan_victim"
 	name = "Small Freighter"
@@ -709,3 +744,5 @@
 /datum/map_template/shuttle/snowdin/excavation
 	suffix = "excavation"
 	name = "Snowdin Excavation Elevator"
+
+#undef EMAG_LOCKED_SHUTTLE_COST

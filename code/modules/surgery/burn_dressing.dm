@@ -24,7 +24,7 @@
 
 ///// Debride
 /datum/surgery_step/debride
-	name = "excise infection"
+	name = "excise infection (hemostat)"
 	implements = list(
 		TOOL_HEMOSTAT = 100,
 		TOOL_SCALPEL = 85,
@@ -32,6 +32,9 @@
 		TOOL_WIRECUTTER = 40)
 	time = 30
 	repeatable = TRUE
+	preop_sound = 'sound/surgery/scalpel1.ogg'
+	success_sound = 'sound/surgery/retractor2.ogg'
+	failure_sound = 'sound/surgery/organ1.ogg'
 	/// How much sanitization is added per step
 	var/sanitization_added = 0.5
 	/// How much infestation is removed per step (positive number)
@@ -67,6 +70,7 @@
 		display_results(user, target, span_notice("You begin to excise infected flesh from [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to excise infected flesh from [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to excise infected flesh from [target]'s [parse_zone(user.zone_selected)]."))
+		display_pain(target, "The infection in your [parse_zone(user.zone_selected)] stings like hell! It feels like you're being stabbed!")
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
@@ -104,7 +108,7 @@
 
 ///// Dressing burns
 /datum/surgery_step/dress
-	name = "bandage burns"
+	name = "bandage burns (gauze/tape)"
 	implements = list(
 		/obj/item/stack/medical/gauze = 100,
 		/obj/item/stack/sticky_tape/surgical = 100)
@@ -121,6 +125,7 @@
 		display_results(user, target, span_notice("You begin to dress the burns on [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to dress the burns on [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to dress the burns on [target]'s [parse_zone(user.zone_selected)]."))
+		display_pain(target, "The burns on your [parse_zone(user.zone_selected)] sting like hell!")
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
@@ -141,6 +146,6 @@
 
 /datum/surgery_step/dress/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob = 0)
 	..()
-	if(istype(tool, /obj/item/stack))
+	if(isstack(tool))
 		var/obj/item/stack/used_stack = tool
 		used_stack.use(1)

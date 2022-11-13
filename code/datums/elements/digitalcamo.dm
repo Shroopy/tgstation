@@ -1,5 +1,5 @@
 /datum/element/digitalcamo
-	element_flags = ELEMENT_DETACH
+	element_flags = ELEMENT_DETACH_ON_HOST_DESTROY
 	var/list/attached_mobs = list()
 
 /datum/element/digitalcamo/New()
@@ -42,9 +42,9 @@
 /datum/element/digitalcamo/proc/on_examine(datum/source, mob/M)
 	SIGNAL_HANDLER
 
-	to_chat(M, "<span class = 'warning'>[source.p_their()] skin seems to be shifting and morphing like is moving around below it.</span>")
+	to_chat(M, span_warning("[source.p_their()] skin seems to be shifting like something is moving below it."))
 
-/datum/element/digitalcamo/proc/can_track(datum/source)
+/datum/element/digitalcamo/proc/can_track(datum/source, mob/user)
 	SIGNAL_HANDLER
 
 	return COMPONENT_CANT_TRACK

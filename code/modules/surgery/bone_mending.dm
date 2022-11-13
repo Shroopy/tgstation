@@ -26,8 +26,8 @@
 	name = "Repair Compound Fracture"
 	steps = list(
 		/datum/surgery_step/incise,
-		/datum/surgery_step/clamp_bleeders,
 		/datum/surgery_step/retract_skin,
+		/datum/surgery_step/clamp_bleeders,
 		/datum/surgery_step/reset_compound_fracture,
 		/datum/surgery_step/repair_bone_compound,
 		/datum/surgery_step/close)
@@ -61,12 +61,13 @@
 		display_results(user, target, span_notice("You begin to repair the fracture in [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to repair the fracture in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to repair the fracture in [target]'s [parse_zone(user.zone_selected)]."))
+		display_pain(target, "Your [parse_zone(user.zone_selected)] aches with pain!")
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
 /datum/surgery_step/repair_bone_hairline/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(surgery.operated_wound)
-		if(istype(tool, /obj/item/stack))
+		if(isstack(tool))
 			var/obj/item/stack/used_stack = tool
 			used_stack.use(1)
 		display_results(user, target, span_notice("You successfully repair the fracture in [target]'s [parse_zone(target_zone)]."),
@@ -80,7 +81,7 @@
 
 /datum/surgery_step/repair_bone_hairline/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob = 0)
 	..()
-	if(istype(tool, /obj/item/stack))
+	if(isstack(tool))
 		var/obj/item/stack/used_stack = tool
 		used_stack.use(1)
 
@@ -88,7 +89,7 @@
 
 ///// Reset Compound Fracture (Crticial)
 /datum/surgery_step/reset_compound_fracture
-	name = "reset bone"
+	name = "reset bone (bonesetter)"
 	implements = list(
 		/obj/item/bonesetter = 100,
 		/obj/item/stack/sticky_tape/surgical = 60,
@@ -101,12 +102,13 @@
 		display_results(user, target, span_notice("You begin to reset the bone in [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to reset the bone in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to reset the bone in [target]'s [parse_zone(user.zone_selected)]."))
+		display_pain(target, "The aching pain in your [parse_zone(user.zone_selected)] is overwhelming!")
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
 /datum/surgery_step/reset_compound_fracture/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(surgery.operated_wound)
-		if(istype(tool, /obj/item/stack))
+		if(isstack(tool))
 			var/obj/item/stack/used_stack = tool
 			used_stack.use(1)
 		display_results(user, target, span_notice("You successfully reset the bone in [target]'s [parse_zone(target_zone)]."),
@@ -119,7 +121,7 @@
 
 /datum/surgery_step/reset_compound_fracture/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob = 0)
 	..()
-	if(istype(tool, /obj/item/stack))
+	if(isstack(tool))
 		var/obj/item/stack/used_stack = tool
 		used_stack.use(1)
 
@@ -139,12 +141,13 @@
 		display_results(user, target, span_notice("You begin to repair the fracture in [target]'s [parse_zone(user.zone_selected)]..."),
 			span_notice("[user] begins to repair the fracture in [target]'s [parse_zone(user.zone_selected)] with [tool]."),
 			span_notice("[user] begins to repair the fracture in [target]'s [parse_zone(user.zone_selected)]."))
+		display_pain(target, "The aching pain in your [parse_zone(user.zone_selected)] is overwhelming!")
 	else
 		user.visible_message(span_notice("[user] looks for [target]'s [parse_zone(user.zone_selected)]."), span_notice("You look for [target]'s [parse_zone(user.zone_selected)]..."))
 
 /datum/surgery_step/repair_bone_compound/success(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool, datum/surgery/surgery, default_display_results = FALSE)
 	if(surgery.operated_wound)
-		if(istype(tool, /obj/item/stack))
+		if(isstack(tool))
 			var/obj/item/stack/used_stack = tool
 			used_stack.use(1)
 		display_results(user, target, span_notice("You successfully repair the fracture in [target]'s [parse_zone(target_zone)]."),
@@ -158,6 +161,6 @@
 
 /datum/surgery_step/repair_bone_compound/failure(mob/user, mob/living/target, target_zone, obj/item/tool, datum/surgery/surgery, fail_prob = 0)
 	..()
-	if(istype(tool, /obj/item/stack))
+	if(isstack(tool))
 		var/obj/item/stack/used_stack = tool
 		used_stack.use(1)
