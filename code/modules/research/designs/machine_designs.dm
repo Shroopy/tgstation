@@ -1106,6 +1106,22 @@
 	)
 	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
 
+/datum/design/board/xeno_listing_console
+	name = "Computer Design (Research and Development Listing Console)"
+	desc = "The circuit board for a research listing console."
+	id = "xenoa_list_console"
+	build_path = /obj/item/circuitboard/computer/xenoartifact_console
+	category = list ("Research Machinery")
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
+
+/datum/design/board/xenia_listing_inbox
+	name = "Machine Design (Bluespace Straythread Pad)"
+	desc = "The circuit board for a bluespace straythread pad."
+	id = "xenoa_list_pad"
+	build_path = /obj/item/circuitboard/machine/xenoartifact_inbox
+	category = list ("Research Machinery")
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
+
 /datum/design/board/coffeemaker
 	name = "Coffeemaker Board"
 	desc = "The circuit board for a coffeemaker."

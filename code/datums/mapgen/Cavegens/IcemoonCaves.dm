@@ -26,6 +26,7 @@
 		/obj/structure/geyser/protozine = 10,
 		/obj/structure/geyser/random = 2,
 		/obj/structure/geyser/wittel = 10,
+		/obj/item/xenoartifact = 10,
 	)
 
 /datum/map_generator/cave_generator/icemoon/surface

@@ -1042,6 +1042,15 @@
 
 	return is_magic_blocked
 
+///Return any anti artifact atom on this mob
+/mob/proc/anti_artifact_check(self = FALSE)
+	var/list/protection_sources = list()
+	if(SEND_SIGNAL(src, COMSIG_MOB_RECEIVE_ARTIFACT, src, self, protection_sources) & COMPONENT_BLOCK_ARTIFACT)
+		if(protection_sources.len)
+			return pick(protection_sources)
+		else
+			return src
+
 /// Called whenever a magic effect with a charge cost is blocked and we haven't recently blocked magic.
 /mob/proc/on_block_magic_effects(magic_flags, list/antimagic_sources)
 	return

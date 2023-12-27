@@ -33,6 +33,7 @@
 		/obj/structure/geyser/protozine = 10,
 		/obj/structure/geyser/random = 2,
 		/obj/structure/geyser/wittel = 10,
+		/obj/item/xenoartifact = 10,
 	)
 
 	initial_closed_chance = 45
