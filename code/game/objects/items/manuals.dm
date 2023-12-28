@@ -232,3 +232,28 @@
 			Good luck!
 			</body>
 			</html>"}
+
+// Wiki books that are linked to the configured wiki link.
+
+// A book that links to the wiki
+/obj/item/book/manual/wiki
+	var/page_link = ""
+
+/obj/item/book/manual/wiki/Initialize(mapload)
+	. = ..()
+
+/obj/item/book/manual/wiki/attack_self(mob/user)
+	var/wikiurl = CONFIG_GET(string/wikiurl)
+	if(!wikiurl)
+		return
+	if(alert(user, "This will open the wiki page in your browser. Are you sure?", null, "Yes", "No") != "Yes")
+		return
+	DIRECT_OUTPUT(user, link("[wikiurl]/[page_link]"))
+
+
+/obj/item/book/manual/wiki/xenoarchaeology
+	name = "Xenoarchaeology Fieldguide"
+	icon_state ="xenoarchaeology"
+	author = "Phillippe French"
+	title = "Xenoarchaeology Fieldguide"
+	page_link = "Guide_to_Artifacts"

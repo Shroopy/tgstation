@@ -40,6 +40,10 @@
 	equip_delay_other = 70
 	resistance_flags = ACID_PROOF
 
+/obj/item/clothing/suit/bio_suit/Initialize(mapload)
+	. = ..()
+	AddComponent(/datum/component/anti_artifact, INFINITY, FALSE, 75)
+
 //Standard biosuit, orange stripe
 /datum/armor/suit_bio_suit
 	bio = 100
